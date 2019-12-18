@@ -16,17 +16,44 @@ public class AppMain {
     private String roleDataFileName = "roledata.json";
 
     public AppMain() {
-        try {
-            initUserDataInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    public void setUserDataFileName(String userDataFileName) {
+        this.userDataFileName = userDataFileName;
+    }
+
+    public void setRoleDataFileName(String roleDataFileName) {
+        this.roleDataFileName = roleDataFileName;
     }
 
     public static void main(String a[]){
         AppMain appMain = new AppMain();
-        appMain.findSubordinates(3);
-        appMain.findSubordinates(1);
+
+        System.out.println();
+        if(a.length < 1){
+            System.out.println("Usage : <userid> <user_data_file> <role_data_file>");
+            System.out.println("userid is required, if user_data_file and role_data_file is not provided, will use the default data");
+            System.exit(1);
+        }
+        int userId = Integer.parseInt(a[0]);
+
+        if(a.length>1){
+            System.out.println("provided USER data file");
+            appMain.setUserDataFileName(a[1]);
+        }else  if(a.length>2){
+            System.out.println("provided ROLE data file");
+            appMain.setRoleDataFileName(a[2]);
+        }
+        try {
+
+            appMain.initUserDataInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        appMain.findSubordinates(userId);
+        //appMain.findSubordinates(1);
 
     }
 
@@ -35,6 +62,8 @@ public class AppMain {
         List<User> users = userDataService.getSubOrdinates(userId);
         if(users!= null){
             users.forEach(System.out::println);
+        }else{
+            System.out.println("No subordinates found");
         }
     }
 

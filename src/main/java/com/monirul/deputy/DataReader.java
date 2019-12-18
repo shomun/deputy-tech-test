@@ -2,7 +2,10 @@ package com.monirul.deputy;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,9 +32,30 @@ public class DataReader {
     }
 
     private String getDataFromFile(String fileName) throws URISyntaxException, IOException {
-        URI filePath = getClass().getClassLoader().getResource(fileName).toURI();
-        byte[] data =Files.readAllBytes(Paths.get(filePath));
-        return new String(data);
+        try {
+            Path filePath = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
+            byte[] data = Files.readAllBytes(filePath);
+            return new String(data);
+        }catch (Exception e){
+            System.out.println("Reading from classpath : " + fileName);
+            InputStream dataStream = getClass().getClassLoader().getResourceAsStream(fileName);
+            return readFromInputStream(dataStream);
 
+        }
+
+
+
+    }
+
+    private String readFromInputStream(InputStream inputStream) throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
     }
 }

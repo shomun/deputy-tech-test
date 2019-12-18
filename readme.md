@@ -19,8 +19,11 @@ Data volume fits in memory and does not effect performance while sequential look
 # How to run
 Gradle is required to build the solution. It is assumed gradle is available. Run the following gradle command
 ```
-gradlew clean build
+gradlew clean buildJar
 ```
 it will build an executable jar at /build/libs folder. Run the jar as follows,
 ```
-java -jar deputy-test-1.0-SNAPSHOT.jar
+java -jar deputy-test-1.0-SNAPSHOT.jar <user_id> <user data file> <role data file>
+```
+User and role data file are optional, if not provided , program will use default data.
+Note: Only JSON format is allowed for User and role data file .

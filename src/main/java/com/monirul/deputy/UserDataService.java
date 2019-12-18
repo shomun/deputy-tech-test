@@ -24,6 +24,11 @@ public class UserDataService {
         this.roles = roles;
     }
 
+    /**
+     * find subordinates for a given user id, it will return all the users down the hierarchy
+     * @param userId
+     * @return
+     */
     public List<User> getSubOrdinates(int userId){
         List<User> subordinates = null;
         User user = this.findUserById(userId);
@@ -35,6 +40,11 @@ public class UserDataService {
         return subordinates;
     }
 
+    /**
+     * Get the list of sub Role IDs for a given role id
+     * @param parentRoleId
+     * @return
+     */
     private List<Integer> getSubRoleIdsByParentRoleId(int parentRoleId) {
         List<Integer> subRoleIds = null;
         List<Role> subRoles = findSubRolesByParentId(parentRoleId);
@@ -43,6 +53,8 @@ public class UserDataService {
         }
         return subRoleIds;
     }
+
+
 
     /**
      * Find a user by user id
